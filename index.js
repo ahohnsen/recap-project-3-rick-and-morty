@@ -1,13 +1,5 @@
 import createCharacterCard from "./components/CharacterCard/CharacterCard.js";
 
-const character = {
-  image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-  name: "Rick Sanchez",
-  status: "Alive",
-  type: "",
-  episode: "51",
-};
-
 const cardContainer = document.querySelector('[data-js="card-container"]');
 const searchBarContainer = document.querySelector('[data-js="search-bar-container"]');
 const searchBar = document.querySelector('[data-js="search-bar"]');
@@ -21,6 +13,39 @@ const maxPage = 1;
 const page = 1;
 const searchQuery = "";
 
-const card = createCharacterCard(character);
+fetchCharacters();
 
-cardContainer.append(card);
+async function fetchCharacters() {
+  const response = await fetch(
+    `https://rickandmortyapi.com/api/character?page=${page}&name=${searchQuery}`
+  );
+  const data = await response.json();
+  const characters = data.results;
+
+  cardContainer.innerHTML = "";
+
+  characters.forEach((character) => {
+    const card = createCharacterCard(character);
+    cardContainer.append(card);
+  });
+}
+
+// Alternative version
+//
+// async function fetchCharacters() {
+//   const response = await fetch(
+//     `https://rickandmortyapi.com/api/character?page=${page}&name=${searchQuery}`
+//   );
+//   const data = await response.json();
+//   const characters = data.results;
+//
+//   cardContainer.innerHTML = "";
+//   return characters;
+// }
+
+// const characters = await fetchCharacters();
+
+// characters.forEach((character) => {
+//   const card = createCharacterCard(character);
+//   cardContainer.append(card);
+// });
